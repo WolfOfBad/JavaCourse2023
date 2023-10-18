@@ -36,13 +36,13 @@ public class HangmanConsoleTest {
         List<String> loggedStrings = loggerStringsGetter.getStrings();
         loggerStringsGetter.endReading();
 
-        assertThat(loggedStrings.get(1)).isEqualTo("Mistake 1 out of 5");
-        assertThat(loggedStrings.get(2)).isEqualTo("Mistake 2 out of 5");
-        assertThat(loggedStrings.get(3)).isEqualTo("Mistake 3 out of 5");
-        assertThat(loggedStrings.get(4)).isEqualTo("Mistake 4 out of 5");
-        assertThat(loggedStrings.get(5)).isEqualTo("Mistake 5 out of 5");
-        assertThat(loggedStrings.get(6)).isEqualTo("You lost");
-        assertThat(loggedStrings.get(7)).isEqualTo("The word was null\n");
+        assertThat(loggedStrings.get(2)).isEqualTo("Mistake 1 out of 5");
+        assertThat(loggedStrings.get(3)).isEqualTo("Mistake 2 out of 5");
+        assertThat(loggedStrings.get(4)).isEqualTo("Mistake 3 out of 5");
+        assertThat(loggedStrings.get(5)).isEqualTo("Mistake 4 out of 5");
+        assertThat(loggedStrings.get(6)).isEqualTo("Mistake 5 out of 5");
+        assertThat(loggedStrings.get(7)).isEqualTo("You lost");
+        assertThat(loggedStrings.get(8)).isEqualTo("The word was null\n");
 
     }
 
@@ -70,8 +70,29 @@ public class HangmanConsoleTest {
         List<String> loggedStrings = loggerStringsGetter.getStrings();
         loggerStringsGetter.endReading();
 
-        assertThat(loggedStrings.get(1)).isEqualTo("You won");
-        assertThat(loggedStrings.get(2)).isEqualTo("The word was null\n");
+        assertThat(loggedStrings.get(2)).isEqualTo("You won");
+        assertThat(loggedStrings.get(3)).isEqualTo("The word was null\n");
+    }
 
+    @Test
+    @DisplayName("Сценарий прерывания игры")
+    public void interruptGameTest() throws Exception {
+        Player playerMock = mock(Player.class);
+
+        Mockito.when(playerMock.isPressedInterrupt()).thenReturn(true);
+
+        HangmanConsole game = new HangmanConsole();
+        Field playerField = HangmanConsole.class.getDeclaredField("player");
+        playerField.setAccessible(true);
+        playerField.set(game, playerMock);
+
+        LoggerStringsGetter loggerStringsGetter = new LoggerStringsGetter(HangmanConsole.class);
+
+        game.run();
+
+        List<String> loggedStrings = loggerStringsGetter.getStrings();
+        loggerStringsGetter.endReading();
+
+        assertThat(loggedStrings.get(2)).isEqualTo("You ended game by hotkey");
     }
 }

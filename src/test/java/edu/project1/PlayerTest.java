@@ -57,18 +57,30 @@ public class PlayerTest {
     @ParameterizedTest
     @MethodSource("continueArguments")
     @DisplayName("Тест продолжения игры")
-    public void continueGameTest(String input, boolean result) {
+    public void continueGameTest(String input, boolean result) throws Exception {
         Player player = new Player();
         InputStream bs = new ByteArrayInputStream(input.getBytes());
 
-        try {
-            Field field = Player.class.getDeclaredField("scanner");
-            field.setAccessible(true);
-            field.set(player, new Scanner(bs));
-        } catch (Exception ignored) {
-        }
+        Field field = Player.class.getDeclaredField("scanner");
+        field.setAccessible(true);
+        field.set(player, new Scanner(bs));
 
         assertThat(player.continueGame()).isEqualTo(result);
+    }
+
+    @Test
+    @DisplayName("Тест горячей клавиши прерывания")
+    public void interruptTest() throws Exception {
+        Player player = new Player();
+        InputStream bs = new ByteArrayInputStream("".getBytes());
+
+        Field field = Player.class.getDeclaredField("scanner");
+        field.setAccessible(true);
+        field.set(player, new Scanner(bs));
+
+        player.getCharacter();
+
+        assertThat(player.isPressedInterrupt()).isTrue();
     }
 
 }
