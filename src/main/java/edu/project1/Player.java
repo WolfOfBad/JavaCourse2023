@@ -23,7 +23,7 @@ public class Player {
     }
 
     public boolean isPressedInterrupt() {
-	    return pressedInterrupt;
+        return pressedInterrupt;
     }
 
     public boolean continueGame() {
