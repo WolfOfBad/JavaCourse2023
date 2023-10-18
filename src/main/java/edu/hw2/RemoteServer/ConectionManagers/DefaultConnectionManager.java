@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class DefaultConnectionManager implements ConnectionManager {
-    private final static Random random = new Random();
+    private final Random random = new Random();
     private final Logger logger = LogManager.getLogger();
     // Каждые 5 подключений гарантированно выдает нестабильное соединение
     private static final int FAULTY_CONNECTION_RATE = 5;
