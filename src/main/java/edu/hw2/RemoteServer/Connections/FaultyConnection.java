@@ -22,11 +22,10 @@ public class FaultyConnection implements Connection {
             // execution failed
             failExecutionCount++;
             throw new ConnectionException("Execution failed");
-        } 
-            failExecutionCount = random.nextInt(1, SUCCESS_EXECUTION_RATE);
-            logger.info("Command executed successfully!");
-            // execution...
         }
+        failExecutionCount = random.nextInt(1, SUCCESS_EXECUTION_RATE);
+        logger.info("Command executed successfully!");
+        // execution...
     }
 
     @Override

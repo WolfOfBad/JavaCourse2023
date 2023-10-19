@@ -18,22 +18,25 @@ public final class PopularCommandExecutor {
 
     private void tryExecute(String command) {
         try (Connection connection = manager.getConnection()) {
-            int attempts = 0;
-            while (attempts < maxAttempts) {
-                try {
-                    connection.execute(command);
-                    break;
-                } catch (ConnectionException exception) {
-                    logger.info(exception.getMessage());
-                    attempts++;
-                    if (attempts == maxAttempts) {
-                        throw new ConnectionException("Execution failed " + maxAttempts + " times", exception);
-                    }
-                }
-            }
+            executeCommand(connection, command);
         } catch (Exception exception) {
             logger.info(exception.getMessage(), (Object) exception.getStackTrace());
         }
+    }
 
+    private void executeCommand(Connection connection, String command) throws ConnectionException {
+        int attempts = 0;
+        while (attempts < maxAttempts) {
+            try {
+                connection.execute(command);
+                break;
+            } catch (ConnectionException exception) {
+                logger.info(exception.getMessage());
+                attempts++;
+                if (attempts == maxAttempts) {
+                    throw new ConnectionException("Execution failed " + maxAttempts + " times", exception);
+                }
+            }
+        }
     }
 }
