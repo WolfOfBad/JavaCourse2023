@@ -24,7 +24,7 @@ public class DefaultConnectionManager implements ConnectionManager {
             logger.info("Stable connection is established");
             connectionCount++;
             return new StableConnection();
-        } else {
+        } 
             logger.info("Faulty connection is established");
             connectionCount = random.nextInt(1, FAULTY_CONNECTION_RATE);
             return new FaultyConnection();
