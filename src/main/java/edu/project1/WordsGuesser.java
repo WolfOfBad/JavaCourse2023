@@ -21,7 +21,7 @@ public class WordsGuesser {
         return word;
     }
 
-    public void getCurrentState() {
+    public void printCurrentState() {
         logger.info("The word: " + guessedWord);
     }
 
