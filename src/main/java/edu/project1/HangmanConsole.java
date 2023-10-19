@@ -20,7 +20,7 @@ public class HangmanConsole {
             wordsGuesser.setWord(wordsProvider.getWord());
             int errors = 0;
             while (errors < MAX_ERRORS && !wordsGuesser.guessedAllWord()) {
-                wordsGuesser.getCurrentState();
+                wordsGuesser.printCurrentState();
                 char guessed = player.getCharacter();
                 if (player.isPressedInterrupt()) {
                     break;

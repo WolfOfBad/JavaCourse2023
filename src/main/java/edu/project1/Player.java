@@ -26,12 +26,23 @@ public class Player {
         return pressedInterrupt;
     }
 
+    private boolean isContinueCondition(String answer) {
+        if (pressedInterrupt) {
+            return false;
+        }
+        if (answer.length() != 1) {
+            return false;
+        }
+        if (answer.charAt(0) != 'y' && answer.charAt(0) != 'n') {
+            return false;
+        }
+        return true;
+    }
+
     public boolean continueGame() {
         logger.info("Do you want to continue game? y/n");
         String answer = checkInterruption();
-        while (!pressedInterrupt
-            && (answer.length() != 1
-            || (answer.charAt(0) != 'y' && answer.charAt(0) != 'n'))) {
+        while (!isContinueCondition(answer)) {
             logger.info("Please enter y/n for continue game or to exit");
             answer = checkInterruption();
         }

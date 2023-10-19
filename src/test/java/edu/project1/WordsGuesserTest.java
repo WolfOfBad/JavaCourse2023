@@ -25,7 +25,7 @@ public class WordsGuesserTest {
         LoggerStringsGetter loggerStringsGetter = new LoggerStringsGetter(WordsGuesser.class);
 
         wordsGuesser.setWord("some word");
-        wordsGuesser.getCurrentState();
+        wordsGuesser.printCurrentState();
 
         List<String> loggedStrings = loggerStringsGetter.getStrings();
         loggerStringsGetter.endReading();
@@ -39,37 +39,27 @@ public class WordsGuesserTest {
         WordsGuesser wordsGuesser = new WordsGuesser();
         LoggerStringsGetter loggerStringsGetter = new LoggerStringsGetter(WordsGuesser.class);
 
-        wordsGuesser.setWord("worrd");
+        wordsGuesser.setWord("abb");
 
-        boolean res1 = wordsGuesser.guessCharacter('w');
+        boolean res1 = wordsGuesser.guessCharacter('a');
         boolean guessed1 = wordsGuesser.guessedAllWord();
-        boolean res2 = wordsGuesser.guessCharacter('o');
+        boolean res2 = wordsGuesser.guessCharacter('c');
         boolean guessed2 = wordsGuesser.guessedAllWord();
-        boolean res3 = wordsGuesser.guessCharacter('a');
+        boolean res3 = wordsGuesser.guessCharacter('b');
         boolean guessed3 = wordsGuesser.guessedAllWord();
-        boolean res4 = wordsGuesser.guessCharacter('r');
-        boolean guessed4 = wordsGuesser.guessedAllWord();
-        boolean res5 = wordsGuesser.guessCharacter('d');
-        boolean guessed5 = wordsGuesser.guessedAllWord();
 
         List<String> loggedStrings = loggerStringsGetter.getStrings();
         loggerStringsGetter.endReading();
 
         assertThat(res1).isTrue();
-        assertThat(res2).isTrue();
-        assertThat(res3).isFalse();
-        assertThat(res4).isTrue();
-        assertThat(res5).isTrue();
+        assertThat(res2).isFalse();
+        assertThat(res3).isTrue();
         assertThat(guessed1).isFalse();
         assertThat(guessed2).isFalse();
-        assertThat(guessed3).isFalse();
-        assertThat(guessed4).isFalse();
-        assertThat(guessed5).isTrue();
+        assertThat(guessed3).isTrue();
         assertThat(loggedStrings.get(0)).isEqualTo("Hit!");
-        assertThat(loggedStrings.get(1)).isEqualTo("Hit!");
-        assertThat(loggedStrings.get(2)).isEqualTo("Missed!");
-        assertThat(loggedStrings.get(3)).isEqualTo("Hit!");
-        assertThat(loggedStrings.get(4)).isEqualTo("Hit!");
+        assertThat(loggedStrings.get(1)).isEqualTo("Missed!");
+        assertThat(loggedStrings.get(2)).isEqualTo("Hit!");
 
     }
 
