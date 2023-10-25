@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 
-public class FrequencyDictionary {
+public class FrequencyDictionary<T> {
+    public Map<T, Integer> freqDict(@NotNull List<T> list) {
+        Map<T, Integer> result = new HashMap<>();
 
-    public Map<Object, Integer> freqDict(@NotNull List<Object> list) {
-        Map<Object, Integer> result = new HashMap<>();
-
-        for (Object item : list) {
+        for (T item : list) {
             if (!result.containsKey(item)) {
                 result.put(item, 0);
             }
