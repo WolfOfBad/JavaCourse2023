@@ -1,12 +1,11 @@
 package edu.hw4;
 
+import edu.hw4.Validation.ValidationError;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import edu.hw4.Validation.AnimalChecker;
-import edu.hw4.Validation.ValidationError;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -105,7 +104,7 @@ public class TaskTests {
             Arguments.of(List.of(
                 new Animal("a", Animal.Type.DOG, Animal.Sex.M, 0, 0, 0, true),
                 new Animal("a", Animal.Type.DOG, Animal.Sex.F, 0, 0, 0, true)
-            ), null),
+            ), Animal.Sex.M),
 
         };
     }

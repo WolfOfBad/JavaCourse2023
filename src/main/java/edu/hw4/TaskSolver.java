@@ -2,6 +2,7 @@ package edu.hw4;
 
 import edu.hw4.Validation.AnimalChecker;
 import edu.hw4.Validation.ValidationError;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -58,13 +59,11 @@ public class TaskSolver {
             .count();
         int females = animals.size() - males;
 
-        if (males > females) {
+        if (males >= females) {
             return Animal.Sex.M;
-        } else if (females > males) {
-            return Animal.Sex.F;
-        } else {
-            return null;
         }
+
+        return Animal.Sex.F;
     }
 
     /** Task 6 */
@@ -73,11 +72,11 @@ public class TaskSolver {
             .stream()
             .collect(Collectors
                 .toMap(Animal::type, animal -> animal, (animal1, animal2) -> {
-                if (animal1.weight() > animal2.weight()) {
-                    return animal1;
-                }
-                return animal2;
-            }));
+                    if (animal1.weight() > animal2.weight()) {
+                        return animal1;
+                    }
+                    return animal2;
+                }));
     }
 
     /**
@@ -224,24 +223,16 @@ public class TaskSolver {
     public Animal mostHeavyFishInSomeLists(@NotNull List<List<Animal>> lists) {
         List<Animal> fishes = lists
             .stream()
-            .filter(list -> list
-                .stream()
-                .anyMatch(animal -> animal.type() == Animal.Type.FISH))
-            .map(list -> list
-                .stream()
-                .filter(animal -> animal.type() == Animal.Type.FISH)
-                .sorted(Comparator
-                    .comparing(Animal::weight)
-                    .reversed())
-                .toList()
-                .get(0))
+            .flatMap(Collection::stream)
+            .filter(animal -> animal.type() == Animal.Type.FISH)
             .collect(Collectors
                 .toMap(animal -> animal, sum -> 1, Integer::sum))
             .entrySet()
             .stream()
-            .filter(animal -> animal.getValue() > 1)
+            .filter(entry -> entry.getValue() > 1)
             .map(Map.Entry::getKey)
-            .sorted(Comparator.comparing(Animal::weight)
+            .sorted(Comparator
+                .comparing(Animal::weight)
                 .reversed())
             .toList();
 
