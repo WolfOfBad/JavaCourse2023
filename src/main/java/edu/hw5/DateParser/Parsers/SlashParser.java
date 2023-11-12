@@ -5,15 +5,17 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * <p>Обрабатывает строки типа</p>
+ * <p>1/3/1976</p>
+ * <p>1/3/20</p>
+ */
 public class SlashParser extends DateParser {
     @Override
     @SuppressWarnings("MagicNumber")
-    public Optional<LocalDate> parseDate(String string) {
-        // Обрабатывает строки типа
-        // 1/3/1976
-        // 1/3/20
+    public Optional<LocalDate> parseDate(String date) {
         Pattern fullYearPattern = Pattern.compile("^(\\d{1,2})/(\\d{1,2})/(\\d{4})$");
-        Matcher matcher = fullYearPattern.matcher(string);
+        Matcher matcher = fullYearPattern.matcher(date);
         if (matcher.find()) {
             return Optional.of(LocalDate.of(
                 Integer.parseInt(matcher.group(3)),
@@ -23,7 +25,7 @@ public class SlashParser extends DateParser {
         }
 
         Pattern shortYearPattern = Pattern.compile("^(\\d{1,2})/(\\d{1,2})/(\\d{2})$");
-        matcher = shortYearPattern.matcher(string);
+        matcher = shortYearPattern.matcher(date);
         if (matcher.find()) {
             return Optional.of(LocalDate.of(
                 Integer.parseInt(matcher.group(3)) + 2000,
@@ -32,6 +34,6 @@ public class SlashParser extends DateParser {
             ));
         }
 
-        return parseNext(string);
+        return parseNext(date);
     }
 }

@@ -15,12 +15,12 @@ public abstract class DateParser {
         return first;
     }
 
-    public abstract Optional<LocalDate> parseDate(String string);
+    public abstract Optional<LocalDate> parseDate(String date);
 
-    protected Optional<LocalDate> parseNext(String string) {
+    protected Optional<LocalDate> parseNext(String date) {
         if (nextParser == null) {
             return Optional.empty();
         }
-        return nextParser.parseDate(string);
+        return nextParser.parseDate(date);
     }
 }

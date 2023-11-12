@@ -16,7 +16,7 @@ public class ChainDateParser {
         new NDaysAgoParser()
     );
 
-    public Optional<LocalDate> parseDate(String string) {
-        return PARSER.parseDate(string);
+    public Optional<LocalDate> parseDate(String date) {
+        return PARSER.parseDate(date);
     }
 }

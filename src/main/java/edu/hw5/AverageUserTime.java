@@ -7,6 +7,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AverageUserTime {
+    /**
+     * Паттерн времени, например 2022-03-12, 20:20
+     */
+    private static final String TIME_PATTERN = "(\\d{4}-\\d{2}-\\d{2}), (\\d{2}:\\d{2})";
     private long incorrectSessions;
 
     public Duration getAverageUserTime(List<String> sessions) {
@@ -22,9 +26,7 @@ public class AverageUserTime {
 
     @SuppressWarnings({"MultipleStringLiterals", "MagicNumber"})
     private Duration parseString(String session) {
-        // 2022-03-12, 20:20 - 2022-03-12, 23:50
-        Pattern pattern = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2}), (\\d{2}:\\d{2}) - "
-            + "(\\d{4}-\\d{2}-\\d{2}), (\\d{2}:\\d{2})$");
+        Pattern pattern = Pattern.compile(TIME_PATTERN + " - " + TIME_PATTERN);
         Matcher matcher = pattern.matcher(session);
         if (matcher.find()) {
             LocalDateTime start = LocalDateTime.parse(matcher.group(1) + "T" + matcher.group(2) + ":00");
