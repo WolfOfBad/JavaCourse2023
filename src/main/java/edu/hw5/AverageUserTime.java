@@ -10,7 +10,8 @@ public class AverageUserTime {
     /**
      * Паттерн времени, например 2022-03-12, 20:20
      */
-    private static final String TIME_PATTERN = "(\\d{4}-\\d{2}-\\d{2}), (\\d{2}:\\d{2})";
+    private static final Pattern SESSION_PATTERN = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2}), (\\d{2}:\\d{2}) - "
+        + "(\\d{4}-\\d{2}-\\d{2}), (\\d{2}:\\d{2})$");
     private long incorrectSessions;
 
     public Duration getAverageUserTime(List<String> sessions) {
@@ -26,8 +27,7 @@ public class AverageUserTime {
 
     @SuppressWarnings({"MultipleStringLiterals", "MagicNumber"})
     private Duration parseString(String session) {
-        Pattern pattern = Pattern.compile(TIME_PATTERN + " - " + TIME_PATTERN);
-        Matcher matcher = pattern.matcher(session);
+        Matcher matcher = SESSION_PATTERN.matcher(session);
         if (matcher.find()) {
             LocalDateTime start = LocalDateTime.parse(matcher.group(1) + "T" + matcher.group(2) + ":00");
             LocalDateTime end = LocalDateTime.parse(matcher.group(3) + "T" + matcher.group(4) + ":00");
