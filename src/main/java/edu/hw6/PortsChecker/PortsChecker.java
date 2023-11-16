@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PortsChecker {
+    @SuppressWarnings("MultipleStringLiterals")
     public List<PortInfo> getPopularPortsInfo() {
         List<PortInfo> result = new ArrayList<>(PortInfo.POPULAR_PORTS.size());
 

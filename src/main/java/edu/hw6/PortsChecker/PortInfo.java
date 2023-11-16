@@ -8,6 +8,7 @@ public record PortInfo(Integer port,
                        String protocol,
                        boolean isConnected,
                        String service) {
+    @SuppressWarnings("MagicNumber")
     public static final Map<Integer, String> POPULAR_PORTS = Stream.of(new Object[][] {
         {21, "FTP"},
         {22, "SSH"},
@@ -41,6 +42,5 @@ public record PortInfo(Integer port,
         {11211, "Memcached"},
         {27017, "MongoDB Database"},
         {49152, "Windows RPC (Remote Procedure Call)"},
-        {49153, "Windows RPC (Remote Procedure Call)"},
     }).collect(Collectors.toMap(data -> (Integer) data[0], data -> (String) data[1]));
 }
