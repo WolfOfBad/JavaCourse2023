@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-public class Filters {
+public final class Filters {
     @SuppressWarnings("ConstantName")
     public static final AbstractFilter isReadable = Files::isReadable;
     @SuppressWarnings("ConstantName")
