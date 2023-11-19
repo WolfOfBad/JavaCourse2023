@@ -18,65 +18,65 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ADOCWriterTest {
     private final String expected = """
-        ==== Общая информация\r
-        [cols=2]\r
-        |====\r
-        |Метрика\r
-        |Значение\r
-        |Файлы\r
-        |logs.txt\r
-        |Начало логгирования\r
-        |2023-11-19T20:00Z\r
-        |Конец логгирования\r
-        |2023-11-19T22:00Z\r
-        |Количество запросов\r
-        |3\r
-        |Средний размер ответа\r
-        |300\r
-        |====\r
-        ==== Запрашиваемые ресурсы\r
-        [cols=2]\r
-        |====\r
-        |Ресурс\r
-        |Количество\r
-        |test1\r
-        |2\r
-        |test2\r
-        |1\r
-        |====\r
-        ==== Коды ответа\r
-        [cols=3]\r
-        |====\r
-        |Код\r
-        |Имя\r
-        |Количество\r
-        |404\r
-        |Not Found\r
-        |2\r
-        |200\r
-        |OK\r
-        |1\r
-        |====\r
-        ==== Запросы по дням\r
-        [cols=2]\r
-        |====\r
-        |День\r
-        |Количество запросов\r
-        |2023-11-18\r
-        |2\r
-        |2023-11-19\r
-        |1\r
-        |====\r
-        ==== Запросы по часам\r
-        [cols=2]\r
-        |====\r
-        |Час\r
-        |Количество запросов\r
-        |15\r
-        |1\r
-        |22\r
-        |2\r
-        |====\r
+        ==== Общая информация
+        [cols=2]
+        |====
+        |Метрика
+        |Значение
+        |Файлы
+        |logs.txt
+        |Начало логгирования
+        |2023-11-19T20:00Z
+        |Конец логгирования
+        |2023-11-19T22:00Z
+        |Количество запросов
+        |3
+        |Средний размер ответа
+        |300
+        |====
+        ==== Запрашиваемые ресурсы
+        [cols=2]
+        |====
+        |Ресурс
+        |Количество
+        |test1
+        |2
+        |test2
+        |1
+        |====
+        ==== Коды ответа
+        [cols=3]
+        |====
+        |Код
+        |Имя
+        |Количество
+        |404
+        |Not Found
+        |2
+        |200
+        |OK
+        |1
+        |====
+        ==== Запросы по дням
+        [cols=2]
+        |====
+        |День
+        |Количество запросов
+        |2023-11-18
+        |2
+        |2023-11-19
+        |1
+        |====
+        ==== Запросы по часам
+        [cols=2]
+        |====
+        |Час
+        |Количество запросов
+        |15
+        |1
+        |22
+        |2
+        |====
         """;
 
     @Test
@@ -102,6 +102,7 @@ public class ADOCWriterTest {
         StatisticsWriter writer = new ADOCWriter();
         writer.writeStatistics(report, dir);
 
-        assertThat(Files.readString(Path.of(dir.toString(), "logStats.adoc"))).isEqualTo(expected);
+        assertThat(Files.readString(Path.of(dir.toString(), "logStats.adoc"))
+            .replaceAll("\r\n", "\n")).isEqualTo(expected);
     }
 }
