@@ -21,7 +21,8 @@ public class DirectoryFilterTest {
     private final Path pngFile = Path.of("./src/test/resources/hw6/DirectoryFilterTest/gosling=).png");
     private final Path dirFile = Path.of("./src/test/resources/hw6/DirectoryFilterTest/directory");
     private final Path textFile1 = Path.of("./src/test/resources/hw6/DirectoryFilterTest/text file.txt");
-    private final Path textFile2 = Path.of("./src/test/resources/hw6/DirectoryFilterTest/directory/text file — копия.txt");
+    private final Path textFile2 =
+        Path.of("./src/test/resources/hw6/DirectoryFilterTest/directory/text file — копия.txt");
     private final Path docxFile = Path.of("./src/test/resources/hw6/DirectoryFilterTest/word=).docx");
 
     private boolean compareStreamAndSet(DirectoryStream<Path> stream, Set<Path> set) {
@@ -37,7 +38,7 @@ public class DirectoryFilterTest {
     }
 
     @Test
-    @DisplayName("isReadable")
+    @DisplayName("Тест фильтра isReadable")
     public void isReadableTest() throws IOException {
         AbstractFilter filter = isReadable;
         Set<Path> correctFiles = Set.of(pngFile, dirFile, textFile1, docxFile);
@@ -48,7 +49,7 @@ public class DirectoryFilterTest {
     }
 
     @Test
-    @DisplayName("regularFile")
+    @DisplayName("Тест фильтра regularFile")
     public void regularFileTest() throws IOException {
         AbstractFilter filter = isRegularFile;
         Set<Path> correctFiles = Set.of(pngFile, textFile1, docxFile);
@@ -59,7 +60,7 @@ public class DirectoryFilterTest {
     }
 
     @Test
-    @DisplayName("checkSize")
+    @DisplayName("Тест фильтра checkSize")
     public void checkSizeTest() throws IOException {
         AbstractFilter filter = checkSize(size -> size >= 1_000_000);
         Set<Path> correctFiles = Set.of(pngFile);
@@ -70,7 +71,7 @@ public class DirectoryFilterTest {
     }
 
     @Test
-    @DisplayName("magicNumber")
+    @DisplayName("Тест фильтра magicNumber")
     public void magicNumberTest() throws IOException {
         AbstractFilter filter = magicNumber((byte) 0x89, (byte) 'P', (byte) 'N', (byte) 'G');
         Set<Path> correctFiles = Set.of(pngFile);
@@ -81,7 +82,7 @@ public class DirectoryFilterTest {
     }
 
     @Test
-    @DisplayName("globMatches")
+    @DisplayName("Тест фильтра globMatches")
     public void globMatchesTest() throws IOException {
         AbstractFilter filter = globMatches("*.txt");
         Set<Path> correctFiles = Set.of(textFile1);
@@ -92,7 +93,7 @@ public class DirectoryFilterTest {
     }
 
     @Test
-    @DisplayName("regexContains")
+    @DisplayName("Тест фильтра regexContains")
     public void regexContainsTest() throws IOException {
         AbstractFilter filter = regexContains("=\\)");
         Set<Path> correctFiles = Set.of(pngFile, docxFile);
@@ -103,7 +104,7 @@ public class DirectoryFilterTest {
     }
 
     @Test
-    @DisplayName("Chain of filters")
+    @DisplayName("Тест цепочки фильтров")
     public void chainTest() throws IOException {
         AbstractFilter filter = isRegularFile
             .and(isReadable)

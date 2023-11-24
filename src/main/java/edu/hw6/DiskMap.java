@@ -20,8 +20,9 @@ import org.jetbrains.annotations.Nullable;
 public class DiskMap implements Map<String, String> {
     private final Path directory;
     private final static int DEFAULT_CACHE_SIZE = 50;
+    private final static Pattern ENTRY_PATTERN = Pattern.compile("^([^:]*):([^:]*)$");
     private int cacheSize = DEFAULT_CACHE_SIZE;
-    private final LinkedHashMap<String, String> cache = new LinkedHashMap<>(50);
+    private final Map<String, String> cache = new LinkedHashMap<>(50);
 
     /**
      * Создает .txt файл в котором хранятся записи в формате ключ:значение по указанному пути
@@ -38,8 +39,7 @@ public class DiskMap implements Map<String, String> {
     }
 
     private Entry<String, String> convertStringToEntry(String entry) {
-        Pattern pattern = Pattern.compile("^([^:]*):([^:]*)$");
-        Matcher matcher = pattern.matcher(entry);
+        Matcher matcher = ENTRY_PATTERN.matcher(entry);
         if (matcher.find()) {
             return Map.entry(matcher.group(1), matcher.group(2));
         }
@@ -123,23 +123,27 @@ public class DiskMap implements Map<String, String> {
         }
     }
 
+    private String findValueInFileLines(String key, Stream<String> lines) {
+        for (String line : lines.toList()) {
+            Entry<String, String> entry = convertStringToEntry(line);
+            if (entry != null && entry.getKey().compareTo(key) == 0) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
     @Nullable
     @Override
     public String put(String key, String value) {
         if (cache.size() == cacheSize && !cache.containsKey(key)) {
-            cache.pollFirstEntry();
+            ((LinkedHashMap<String, String>) cache).pollFirstEntry();
         }
 
-        String previousValue = cache.putLast(key, value);
+        String previousValue = ((LinkedHashMap<String, String>) cache).putLast(key, value);
         try (Stream<String> lines = Files.lines(directory)) {
             if (previousValue == null) {
-                for (String line : lines.toList()) {
-                    Entry<String, String> entry = convertStringToEntry(line);
-                    if (entry != null && entry.getKey().compareTo(key) == 0) {
-                        previousValue = entry.getValue();
-                        break;
-                    }
-                }
+                previousValue = findValueInFileLines(key, lines);
             }
 
             String entries = new String(Files.readAllBytes(directory));

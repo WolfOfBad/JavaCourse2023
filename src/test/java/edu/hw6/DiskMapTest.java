@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.CleanupMode;
 import org.junit.jupiter.api.io.TempDir;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DiskMapTest {
     @Test
@@ -71,8 +71,8 @@ public class DiskMapTest {
 
         map.put("a", "b");
 
-        assertThat(map.get("a")).isEqualTo("b");
-        assertThat(map.get("c")).isNull();
+        assertThat(map).size().isEqualTo(1);
+        assertThat(map).contains(Map.entry("a", "b"));
     }
 
     @Test
