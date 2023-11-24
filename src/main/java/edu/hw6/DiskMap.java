@@ -166,13 +166,7 @@ public class DiskMap implements Map<String, String> {
         String previousValue = cache.remove(key);
         try (Stream<String> lines = Files.lines(directory)) {
             if (previousValue == null) {
-                for (String line : lines.toList()) {
-                    Entry<String, String> entry = convertStringToEntry(line);
-                    if (entry != null && entry.getKey().equals(key)) {
-                        previousValue = entry.getValue();
-                        break;
-                    }
-                }
+                previousValue = findValueInFileLines((String) key, lines);
             }
 
             String entries = new String(Files.readAllBytes(directory));
