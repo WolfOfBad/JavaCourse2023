@@ -17,50 +17,56 @@ public class ImprovedDataBaseMultiThread implements PersonDatabase {
 
     @Override
     public void add(Person person) {
-        lock.writeLock();
-        persons.put(person.id(), person);
-        if (person.name() != null
-            && person.phoneNumber() != null
-            && person.address() != null) {
-            addValueToMap(names, person.name(), person);
-            addValueToMap(addresses, person.address(), person);
-            addValueToMap(phones, person.phoneNumber(), person);
+        try {
+            lock.writeLock().lock();
+            persons.put(person.id(), person);
+            if (person.name() != null
+                && person.phoneNumber() != null
+                && person.address() != null) {
+                addValueToMap(names, person.name(), person);
+                addValueToMap(addresses, person.address(), person);
+                addValueToMap(phones, person.phoneNumber(), person);
+            }
+        } finally {
+            lock.writeLock().unlock();
         }
-        lock.writeLock().unlock();
     }
 
     @Override
     public void delete(Person person) {
-        lock.writeLock();
-        persons.remove(person.id());
-        if (names.containsKey(person.name())) {
-            List<Person> personsList = names.get(person.name());
-            personsList.remove(person);
-            if (personsList.isEmpty()) {
-                names.put(person.name(), null);
+        try {
+            lock.writeLock().lock();
+            persons.remove(person.id());
+            if (names.containsKey(person.name())) {
+                List<Person> personsList = names.get(person.name());
+                personsList.remove(person);
+                if (personsList.isEmpty()) {
+                    names.put(person.name(), null);
+                }
             }
-        }
-        if (addresses.containsKey(person.address())) {
-            List<Person> personsList = addresses.get(person.address());
-            personsList.remove(person);
-            if (personsList.isEmpty()) {
-                addresses.put(person.address(), null);
+            if (addresses.containsKey(person.address())) {
+                List<Person> personsList = addresses.get(person.address());
+                personsList.remove(person);
+                if (personsList.isEmpty()) {
+                    addresses.put(person.address(), null);
+                }
             }
-        }
-        if (phones.containsKey(person.phoneNumber())) {
-            List<Person> personsList = phones.get(person.phoneNumber());
-            personsList.remove(person);
-            if (personsList.isEmpty()) {
-                phones.put(person.phoneNumber(), null);
+            if (phones.containsKey(person.phoneNumber())) {
+                List<Person> personsList = phones.get(person.phoneNumber());
+                personsList.remove(person);
+                if (personsList.isEmpty()) {
+                    phones.put(person.phoneNumber(), null);
+                }
             }
+        } finally {
+            lock.writeLock().unlock();
         }
-        lock.writeLock().unlock();
     }
 
     @Override
     public @Nullable List<Person> findByName(String name) {
-        lock.readLock().lock();
         try {
+            lock.readLock().lock();
             if (!names.containsKey(name) || names.get(name) == null) {
                 return null;
             }
@@ -72,8 +78,8 @@ public class ImprovedDataBaseMultiThread implements PersonDatabase {
 
     @Override
     public @Nullable List<Person> findByAddress(String address) {
-        lock.readLock().lock();
         try {
+            lock.readLock().lock();
             if (!addresses.containsKey(address) || addresses.get(address) == null) {
                 return null;
             }
@@ -85,8 +91,8 @@ public class ImprovedDataBaseMultiThread implements PersonDatabase {
 
     @Override
     public @Nullable List<Person> findByPhone(String phone) {
-        lock.readLock().lock();
         try {
+            lock.readLock().lock();
             if (!phones.containsKey(phone) || phones.get(phone) == null) {
                 return null;
             }
