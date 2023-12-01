@@ -17,7 +17,7 @@ public class CustomThreadPoolTest {
     );
 
     @Test
-    public void correctWorkTest() throws Exception {
+    public void correctWorkTest() {
         ThreadPool pool = CustomThreadPool.create(5);
         pool.start();
         Map<Long, Long> results = Collections.synchronizedMap(new HashMap<>());
@@ -29,10 +29,14 @@ public class CustomThreadPoolTest {
             });
         }
 
-        Thread.sleep(5000);
+        try {
+            Thread.sleep(5000);
+            pool.close();
+        } catch (Exception e) {
+	        throw new RuntimeException(e);
+        }
 
-        pool.close();
-        assertThat(results).containsExactlyInAnyOrderEntriesOf(fibNumbers);
+	    assertThat(results).containsExactlyInAnyOrderEntriesOf(fibNumbers);
     }
 
     private long fib(long n) {
