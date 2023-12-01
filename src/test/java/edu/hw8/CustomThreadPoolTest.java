@@ -5,7 +5,7 @@ import edu.hw8.CustomThreadPool.ThreadPool;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CustomThreadPoolTest {
@@ -33,10 +33,10 @@ public class CustomThreadPoolTest {
             Thread.sleep(5000);
             pool.close();
         } catch (Exception e) {
-	        throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
 
-	    assertThat(results).containsExactlyInAnyOrderEntriesOf(fibNumbers);
+        assertThat(results).containsExactlyInAnyOrderEntriesOf(fibNumbers);
     }
 
     private long fib(long n) {
