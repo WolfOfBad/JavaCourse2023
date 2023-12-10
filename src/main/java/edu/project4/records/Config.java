@@ -1,7 +1,6 @@
 package edu.project4.records;
 
 import edu.project4.ImageFormat;
-import edu.project4.records.ColoredTransformation;
 
 public record Config(
     int height,

@@ -22,7 +22,7 @@ public final class RandomTransformationProvider {
     }
 
     private static final Random RANDOM = new Random();
-    private static final List<Transformation> transformations = List.of(
+    private static final List<Transformation> TRANSFORMATIONS = List.of(
         new CylinderTransformation(),
         new DiamondTransformation(),
         new DiscTransformation(),
@@ -40,10 +40,10 @@ public final class RandomTransformationProvider {
     );
 
     public static Transformation getRandom() {
-        int index = RANDOM.nextInt(0, transformations.size() + 1);
-        if (index == transformations.size()) {
+        int index = RANDOM.nextInt(0, TRANSFORMATIONS.size() + 1);
+        if (index == TRANSFORMATIONS.size()) {
             return LinearTransformation.getRandom();
         }
-        return transformations.get(index);
+        return TRANSFORMATIONS.get(index);
     }
 }
