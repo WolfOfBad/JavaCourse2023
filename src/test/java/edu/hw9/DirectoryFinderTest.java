@@ -1,8 +1,8 @@
 package edu.hw9;
 
 import edu.hw9.PathFinder.DirectoryFinder;
-import org.junit.jupiter.api.Test;
 import java.io.File;
+import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DirectoryFinderTest {
@@ -14,7 +14,7 @@ public class DirectoryFinderTest {
         var result = obj.findDirectories(new File("./src/test/resources/hw9"), 5);
 
         assertThat(result).size().isEqualTo(1);
-        assertThat(result.get(0).toString()).isEqualTo(".\\src\\test\\resources\\hw9\\5files");
+        assertThat(result.get(0)).isEqualTo(new File("./src/test/resources/hw9/5files"));
     }
 
     @Test
@@ -28,8 +28,7 @@ public class DirectoryFinderTest {
         });
 
         assertThat(result).size().isEqualTo(1);
-        assertThat(result.get(0).toString()).isEqualTo(".\\src\\test\\resources\\hw9\\5files\\meme.png");
+        assertThat(result.get(0)).isEqualTo(new File("./src/test/resources/hw9/5files/meme.png"));
     }
-
 
 }
