@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
@@ -47,7 +46,7 @@ public class BFSSolverParallel implements Solver {
             {0, -1}
         };
 
-        public CellProcessor(Maze maze, Cell cell) {
+        CellProcessor(Maze maze, Cell cell) {
             this.maze = maze;
             this.cell = cell;
         }
