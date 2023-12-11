@@ -3,6 +3,7 @@ package edu.hw7;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PiCalculator {
@@ -44,7 +45,7 @@ public class PiCalculator {
 
     @SuppressWarnings("MagicNumber")
     private int countCircleDots(int dots) {
-        Random random = new Random();
+        Random random = ThreadLocalRandom.current();
         int circleCount = 0;
 
         for (int i = 0; i < dots; i++) {

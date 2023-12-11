@@ -7,10 +7,11 @@ public class ManyIncrementThreadsTest {
     @RepeatedTest(10)
     public void incrementTest() {
         int value = 0;
-        int threads = 1000;
+        int add = 1000;
+        int threads = Runtime.getRuntime().availableProcessors();
 
-        int result = ManyIncrementThreads.incrementThreads(value, threads);
+        int result = ManyIncrementThreads.incrementThreads(value, add, threads);
 
-        assertThat(result).isEqualTo(threads);
+        assertThat(result).isEqualTo(value + add);
     }
 }

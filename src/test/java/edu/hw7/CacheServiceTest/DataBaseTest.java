@@ -2,25 +2,18 @@ package edu.hw7.CacheServiceTest;
 
 import edu.hw7.CacheService.DataBaseMultiThread;
 import edu.hw7.CacheService.Person;
-import java.util.List;
+import edu.hw7.CacheService.PersonBuilder;
 import edu.hw7.CacheService.PersonDatabase;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DataBaseTest {
     @Test
     @DisplayName("Проверка посика пользователя по имени")
     public void findByNameTest() {
-        Person person = new Person(
-            1,
-            "a",
-            "b",
-            "c"
-        );
+        Person person = PersonBuilder.getPerson("a", "b", "c");
 
         PersonDatabase db = new DataBaseMultiThread();
         db.add(person);
@@ -34,12 +27,7 @@ public class DataBaseTest {
     @Test
     @DisplayName("Проверка посика пользователя по адресу")
     public void findByAddressTest() {
-        Person person = new Person(
-            1,
-            "a",
-            "b",
-            "c"
-        );
+        Person person = PersonBuilder.getPerson("a", "b", "c");
 
         PersonDatabase db = new DataBaseMultiThread();
         db.add(person);
@@ -53,12 +41,7 @@ public class DataBaseTest {
     @Test
     @DisplayName("Проверка посика пользователя по телефону")
     public void findByPhoneTest() {
-        Person person = new Person(
-            1,
-            "a",
-            "b",
-            "c"
-        );
+        Person person = PersonBuilder.getPerson("a", "b", "c");
 
         PersonDatabase db = new DataBaseMultiThread();
         db.add(person);
@@ -69,24 +52,21 @@ public class DataBaseTest {
         assertThat(found.get(0)).isEqualTo(person);
     }
 
-    private static Arguments[] persons() {
-        return new Arguments[] {
-            Arguments.of(new Person(1, "a", "b", null)),
-            Arguments.of(new Person(1, "a", null, "c")),
-            Arguments.of(new Person(1, null, "b", "c")),
-        };
-    }
-
-    @ParameterizedTest
-    @MethodSource("persons")
+    @Test
     @DisplayName("Проверка, что пользователя без полей нельзя найти")
-    public void notFoundTest(Person person) {
+    public void notFoundTest() {
         PersonDatabase db = new DataBaseMultiThread();
-        db.add(person);
+        db.add(PersonBuilder.getPerson("a", "b", null));
+        db.add(PersonBuilder.getPerson("a", null, "c"));
+        db.add(PersonBuilder.getPerson(null, "b", "c"));
 
-        List<Person> found = db.findByPhone("c");
+        List<Person> names = db.findByName("a");
+        List<Person> addresses = db.findByAddress("b");
+        List<Person> phones = db.findByPhone("c");
 
-        assertThat(found).isNull();
+        assertThat(names).isNull();
+        assertThat(addresses).isNull();
+        assertThat(phones).isNull();
     }
 
     @Test
@@ -110,5 +90,4 @@ public class DataBaseTest {
         assertThat(afterDeletion).isNull();
 
     }
-
 }

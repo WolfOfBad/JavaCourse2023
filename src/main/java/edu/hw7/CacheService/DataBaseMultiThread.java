@@ -14,10 +14,10 @@ public class DataBaseMultiThread implements PersonDatabase {
 
     @Override
     public synchronized void add(Person person) {
-        persons.put(person.id(), person);
         if (person.name() != null
             && person.phoneNumber() != null
             && person.address() != null) {
+            persons.put(person.id(), person);
             addValueToMap(names, person.name(), person);
             addValueToMap(addresses, person.address(), person);
             addValueToMap(phones, person.phoneNumber(), person);
@@ -26,33 +26,18 @@ public class DataBaseMultiThread implements PersonDatabase {
 
     @Override
     public synchronized void delete(Person person) {
+        persons.computeIfPresent(person.id(), (key, value) -> {
+            names.get(person.name()).remove(person);
+            addresses.get(person.address()).remove(person);
+            phones.get(person.phoneNumber()).remove(person);
+            return person;
+        });
         persons.remove(person.id());
-        if (names.containsKey(person.name())) {
-            List<Person> personsList = names.get(person.name());
-            personsList.remove(person);
-            if (personsList.isEmpty()) {
-                names.put(person.name(), null);
-            }
-        }
-        if (addresses.containsKey(person.address())) {
-            List<Person> personsList = addresses.get(person.address());
-            personsList.remove(person);
-            if (personsList.isEmpty()) {
-                addresses.put(person.address(), null);
-            }
-        }
-        if (phones.containsKey(person.phoneNumber())) {
-            List<Person> personsList = phones.get(person.phoneNumber());
-            personsList.remove(person);
-            if (personsList.isEmpty()) {
-                phones.put(person.phoneNumber(), null);
-            }
-        }
     }
 
     @Override
     public synchronized @Nullable List<Person> findByName(String name) {
-        if (!names.containsKey(name) || names.get(name) == null) {
+        if (!names.containsKey(name) || names.get(name) == null || names.get(name).isEmpty()) {
             return null;
         }
         return List.copyOf(names.get(name));
@@ -60,7 +45,7 @@ public class DataBaseMultiThread implements PersonDatabase {
 
     @Override
     public synchronized @Nullable List<Person> findByAddress(String address) {
-        if (!addresses.containsKey(address) || addresses.get(address) == null) {
+        if (!addresses.containsKey(address) || addresses.get(address) == null || addresses.get(address).isEmpty()) {
             return null;
         }
         return List.copyOf(addresses.get(address));
@@ -68,7 +53,7 @@ public class DataBaseMultiThread implements PersonDatabase {
 
     @Override
     public synchronized @Nullable List<Person> findByPhone(String phone) {
-        if (!phones.containsKey(phone) || phones.get(phone) == null) {
+        if (!phones.containsKey(phone) || phones.get(phone) == null || phones.get(phone).isEmpty()) {
             return null;
         }
         return List.copyOf(phones.get(phone));

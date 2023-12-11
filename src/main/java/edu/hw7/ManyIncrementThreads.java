@@ -1,33 +1,31 @@
 package edu.hw7;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class ManyIncrementThreads {
     private ManyIncrementThreads() {
     }
 
-    public static int incrementThreads(int value, int threadsCount) {
-        List<Thread> threads = new ArrayList<>(threadsCount);
-        AtomicInteger integer = new AtomicInteger();
-        integer.set(value);
-        for (int i = 0; i < threadsCount; i++) {
-            threads.add(new Thread(integer::incrementAndGet));
-        }
-
-        for (Thread thread : threads) {
-            thread.start();
-        }
-
-        try {
-            for (Thread thread : threads) {
-                thread.join();
+    public static int incrementThreads(int value, int add, int threadsCount) {
+        AtomicInteger result = new AtomicInteger(value);
+        CountDownLatch countDown = new CountDownLatch(add);
+        int goal = value + add;
+        Stream<Thread> threads = Stream.generate(() -> new Thread(() -> {
+            while (countDown.getCount() != 0) {
+                result.updateAndGet(x -> x != goal ? x + 1 : x);
+                countDown.countDown();
             }
+        })).limit(threadsCount);
+
+        threads.forEach(Thread::start);
+        try {
+            countDown.await();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        return integer.get();
+        return result.get();
     }
 }
