@@ -31,11 +31,6 @@ public class ParallelBruteforce implements Bruteforce {
 
         int maxPassword = (int) Math.pow(ALPHABET.length(), maxLength);
 
-        /*int iterations = maxPassword / threads + threads;
-        for (int i = 0; i < threads; i++) {
-            pool.submit(getRunnable(i * iterations, (i + 1) * iterations));
-        }*/
-
         for (int i = 0; i < maxPassword; i += STEP) {
             pool.submit(getRunnable(i, Math.min(i + STEP, maxPassword)));
         }
