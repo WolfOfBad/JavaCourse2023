@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
@@ -11,9 +12,6 @@ import java.util.Random;
 import java.util.UUID;
 
 public class RandomObjectGenerator {
-    private static final int LEFT_LIMIT = 48; // 0
-    private static final int RIGHT_LIMIT = 122; // z
-    private static final int MAX_LENGTH = 15;
     private static final Random RANDOM = new Random();
     private static final int NULL_FREQUENCY = 10;
     private static final List<Class<?>> SUPPORTED_TYPES = List.of(
@@ -45,6 +43,7 @@ public class RandomObjectGenerator {
             .filter(method ->
                 Arrays.stream(method.getParameterTypes())
                 .allMatch(SUPPORTED_TYPES::contains))
+            .filter(method -> Modifier.isStatic(method.getModifiers()))
             .toList();
 
         if (methods.isEmpty()) {
@@ -52,7 +51,7 @@ public class RandomObjectGenerator {
         }
 
         Method fabric = methods.get(RANDOM.nextInt(0, methods.size()));
-        return fabric.invoke(randomParameters(fabric.getParameters()));
+        return fabric.invoke(className, randomParameters(fabric.getParameters()));
     }
 
     private String randomString() {
@@ -71,7 +70,7 @@ public class RandomObjectGenerator {
                 switch (annotation) {
                     case Max maxAnnotation -> max = maxAnnotation.value();
                     case Min minAnnotation -> min = minAnnotation.value();
-                    case NotNull notNullAnnotation -> nullable = false;
+                    case NotNull ignored -> nullable = false;
                     default -> throw new RuntimeException("You cannot use this annotation: " + annotation);
                 }
             }

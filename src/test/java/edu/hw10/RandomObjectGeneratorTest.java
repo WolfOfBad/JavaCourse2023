@@ -22,6 +22,15 @@ public class RandomObjectGeneratorTest {
             this.value = value;
             this.string = string;
         }
+
+        public static TestClass create(
+            @Min(value = -100)
+            @Max(value = 100)
+            int value,
+            @NotNull String string
+        ) {
+            return new TestClass(value, string);
+        }
     }
 
     public record TestRecord(
@@ -49,6 +58,17 @@ public class RandomObjectGeneratorTest {
         RandomObjectGenerator rog = new RandomObjectGenerator();
 
         TestRecord obj = (TestRecord) rog.nextObject(TestRecord.class);
+
+        assertThat(obj.value).isGreaterThanOrEqualTo(-100).isLessThanOrEqualTo(100);
+        assertThat(obj.string).isNotNull();
+    }
+
+    @RepeatedTest(10)
+    public void fabricMethodCreationTest()
+        throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        RandomObjectGenerator rog = new RandomObjectGenerator();
+
+        TestClass obj = (TestClass) rog.nextObject(TestClass.class, "create");
 
         assertThat(obj.value).isGreaterThanOrEqualTo(-100).isLessThanOrEqualTo(100);
         assertThat(obj.string).isNotNull();
