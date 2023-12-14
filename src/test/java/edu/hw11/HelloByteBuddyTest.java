@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HelloByteBuddyTest {
     @Test
-    public void t()
+    public void test()
         throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
         Object object = HelloByteBuddy.createClass();

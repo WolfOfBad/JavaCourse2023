@@ -23,7 +23,7 @@ public class DynamicClassCreatorTest {
 
     @ParameterizedTest
     @MethodSource("args")
-    public void t(int n, long expected)
+    public void test(int n, long expected)
         throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Class<?> cls = DynamicClassCreator.create();
 

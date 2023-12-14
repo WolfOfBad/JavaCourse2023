@@ -5,8 +5,9 @@ import net.bytebuddy.agent.ByteBuddyAgent;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.ClassFileLocator;
 import net.bytebuddy.dynamic.loading.ClassReloadingStrategy;
-import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.pool.TypePool;
+import static net.bytebuddy.implementation.MethodDelegation.to;
+import static net.bytebuddy.matcher.ElementMatchers.isStatic;
 import static net.bytebuddy.matcher.ElementMatchers.named;
 import static net.bytebuddy.matcher.ElementMatchers.returns;
 import static net.bytebuddy.matcher.ElementMatchers.takesArgument;
@@ -27,10 +28,11 @@ public final class DynamicChanger {
             .method(named("sum")
                 .and(takesArgument(0, int.class))
                 .and(takesArgument(1, int.class))
-                .and(returns(int.class)))
-            .intercept(MethodDelegation.to(Interceptor.class))
+                .and(returns(int.class))
+                .and(isStatic()))
+            .intercept(to(Interceptor.class))
             .make()
-            .load(ClassLoader.getSystemClassLoader(), ClassReloadingStrategy.fromInstalledAgent());
+            .load(ArithmeticUtils.class.getClassLoader(), ClassReloadingStrategy.fromInstalledAgent());
     }
 
     private static class Interceptor {
