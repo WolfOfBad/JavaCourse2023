@@ -13,7 +13,7 @@ import java.util.concurrent.RecursiveAction;
 
 public class BFSSolverParallel implements Solver {
     private Map<Cell, Cell> backtrack;
-    private ForkJoinPool pool = new ForkJoinPool();
+    private final ForkJoinPool pool = new ForkJoinPool();
 
     @Override
     public List<Cell> solve(Maze maze, Cell start, Cell end) {
@@ -37,8 +37,8 @@ public class BFSSolverParallel implements Solver {
     }
 
     private class CellProcessor extends RecursiveAction {
-        private Maze maze;
-        private Cell cell;
+        private final Maze maze;
+        private final Cell cell;
         private static final int[][] DIRECTIONS = {
             {1, 0},
             {-1, 0},
@@ -58,10 +58,7 @@ public class BFSSolverParallel implements Solver {
                 int y = cell.getY() + direction[0];
                 int x = cell.getX() + direction[1];
 
-                if (0 <= x && x < maze.getWidth()
-                    && 0 <= y && y < maze.getHeight()
-                    && maze.getCell(y, x).getType() == Cell.Type.PASSAGE
-                    && !backtrack.containsKey(maze.getCell(y, x))) {
+                if (isCellCorrect(x, y)) {
                     backtrack.put(maze.getCell(y, x), cell);
                     processing.add(new CellProcessor(maze, maze.getCell(y, x)));
                     processing.getLast().fork();
@@ -70,6 +67,13 @@ public class BFSSolverParallel implements Solver {
             for (CellProcessor processor : processing) {
                 processor.join();
             }
+        }
+
+        private boolean isCellCorrect(int x, int y) {
+            return 0 <= x && x < maze.getWidth()
+                && 0 <= y && y < maze.getHeight()
+                && maze.getCell(y, x).getType() == Cell.Type.PASSAGE
+                && !backtrack.containsKey(maze.getCell(y, x));
         }
     }
 

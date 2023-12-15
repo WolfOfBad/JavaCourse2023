@@ -2,29 +2,20 @@ package edu.hw9;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class StatsCollector {
-    private final Map<String, Metric> metrics = new HashMap<>();
-    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Map<String, Metric> metrics = new ConcurrentHashMap<>();
 
     public void push(String metricName, double[] values) {
-        lock.writeLock().lock();
-        try {
-            metrics.put(metricName, Metric.update(metrics.get(metricName), values));
-        } finally {
-            lock.writeLock().unlock();
-        }
+        metrics.compute(
+            metricName,
+            (k, v) -> Metric.update(metrics.getOrDefault(k, null), values)
+        );
     }
 
     public Map<String, Metric> stats() {
-        lock.readLock().lock();
-        try {
-            return new HashMap<>(metrics);
-        } finally {
-            lock.readLock().unlock();
-        }
+        return new HashMap<>(metrics);
     }
 
     public record Metric(
