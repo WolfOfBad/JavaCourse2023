@@ -40,7 +40,10 @@ public final class CacheProxy implements InvocationHandler {
             }
         }
 
-        Object result = method.invoke(instance, args);
+        Object result;
+        synchronized (instance) {
+            result = method.invoke(instance, args);
+        }
         // check annotation and write to file
         Cache annotation = method.getAnnotation(Cache.class);
         if (annotation != null) {
