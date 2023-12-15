@@ -63,7 +63,7 @@ public class ReflectionBenchmark {
             "get",
             MethodType.methodType(Supplier.class, Student.class),
             MethodType.methodType(Object.class),
-            lookup.findVirtual(Student.class, "surname", MethodType.methodType(String.class)),
+            lookup.findVirtual(Student.class, "name", MethodType.methodType(String.class)),
             MethodType.methodType(String.class)
         );
 
