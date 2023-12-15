@@ -1,11 +1,9 @@
 package edu.project4;
 
-import edu.project4.postProcessing.GammaCorrector;
-import edu.project4.postProcessing.SymmetryProcessor;
+import edu.project4.postprocessing.GammaCorrector;
+import edu.project4.postprocessing.SymmetryProcessor;
 import edu.project4.records.ColoredTransformation;
 import edu.project4.records.Config;
-import edu.project4.records.GenerationBorders;
-import edu.project4.records.ImageBorders;
 import edu.project4.records.PixelMap;
 import edu.project4.render.MultiThreadRenderer;
 import edu.project4.render.Renderer;
@@ -32,16 +30,8 @@ public class ImageGenerator {
         }
 
         map = renderer.render(
-            new ImageBorders(
-                config.height(),
-                config.width()
-            ),
-            new GenerationBorders(
-                config.xMin(),
-                config.xMax(),
-                config.yMin(),
-                config.yMax()
-            ),
+            config.imageBorders(),
+            config.generationBorders(),
             transformations,
             config.samples(),
             config.iterations()
@@ -55,7 +45,7 @@ public class ImageGenerator {
             map = new GammaCorrector(config.gamma()).process(map);
         }
 
-        ImageUtils.save(map, Path.of(config.directory(), config.filename()), config.format());
+        ImageUtils.save(map, Path.of(config.directory().toString(), config.filename()), config.format());
     }
 
     private List<ColoredTransformation> getTransformationList(

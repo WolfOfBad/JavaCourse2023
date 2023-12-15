@@ -1,4 +1,4 @@
-package edu.project4.postProcessing;
+package edu.project4.postprocessing;
 
 import edu.project4.records.PixelMap;
 

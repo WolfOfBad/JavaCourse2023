@@ -1,7 +1,7 @@
 package edu.project4;
 
-import edu.project4.postProcessing.GammaCorrector;
-import edu.project4.postProcessing.SymmetryProcessor;
+import edu.project4.postprocessing.GammaCorrector;
+import edu.project4.postprocessing.SymmetryProcessor;
 import edu.project4.records.Color;
 import edu.project4.records.ImageBorders;
 import edu.project4.records.Pixel;

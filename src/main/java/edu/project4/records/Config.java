@@ -1,21 +1,18 @@
 package edu.project4.records;
 
 import edu.project4.ImageFormat;
+import java.nio.file.Path;
 
 public record Config(
-    int height,
-    int width,
-    double xMin,
-    double xMax,
-    double yMin,
-    double yMax,
+    ImageBorders imageBorders,
+    GenerationBorders generationBorders,
     int samples,
     int iterations,
     int randomAffineTransformations,
     ColoredTransformation[] presetTransformations,
     ImageFormat format,
     boolean correction,
-    String directory,
+    Path directory,
     String filename,
     double gamma,
     int threads,
