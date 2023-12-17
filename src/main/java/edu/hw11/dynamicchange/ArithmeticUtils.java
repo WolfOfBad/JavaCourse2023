@@ -1,4 +1,4 @@
-package edu.hw11.dynamicChange;
+package edu.hw11.dynamicchange;
 
 public final class ArithmeticUtils {
     private ArithmeticUtils() {

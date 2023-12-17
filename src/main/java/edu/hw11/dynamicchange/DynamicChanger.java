@@ -1,4 +1,4 @@
-package edu.hw11.dynamicChange;
+package edu.hw11.dynamicchange;
 
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.agent.ByteBuddyAgent;

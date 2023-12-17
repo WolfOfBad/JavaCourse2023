@@ -6,7 +6,7 @@ import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.implementation.FixedValue;
 import static net.bytebuddy.matcher.ElementMatchers.named;
 
-public class HelloByteBuddy {
+public final class HelloByteBuddy {
     private HelloByteBuddy() {
     }
 
