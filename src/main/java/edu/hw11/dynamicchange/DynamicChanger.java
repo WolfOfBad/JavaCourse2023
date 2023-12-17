@@ -20,7 +20,7 @@ public final class DynamicChanger {
         ByteBuddyAgent.install();
 
         TypeDescription typeDescription = TypePool.Default.ofSystemLoader()
-            .describe("edu.hw11.dynamicChange.ArithmeticUtils")
+            .describe("edu.hw11.dynamicchange.ArithmeticUtils")
             .resolve();
 
         new ByteBuddy()
