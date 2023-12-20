@@ -3,7 +3,7 @@ package edu.hw7;
 import java.math.BigInteger;
 import java.util.stream.LongStream;
 
-public class FactorialCounter {
+public final class FactorialCounter {
     private FactorialCounter() {
     }
 

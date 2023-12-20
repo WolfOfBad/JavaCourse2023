@@ -1,6 +1,6 @@
 package edu.hw7.CacheService;
 
-public class PersonBuilder {
+public final class PersonBuilder {
     private static int currentID = 1;
 
     private PersonBuilder() {

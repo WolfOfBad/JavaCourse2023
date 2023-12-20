@@ -2,7 +2,7 @@ package edu.hw8.CustomThreadPool;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class CustomThreadPool implements ThreadPool {
+public final class CustomThreadPool implements ThreadPool {
     private final PoolThread[] pool;
     private final LinkedBlockingQueue<Runnable> queue;
 

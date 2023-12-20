@@ -4,7 +4,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-public class ManyIncrementThreads {
+public final class ManyIncrementThreads {
     private ManyIncrementThreads() {
     }
 
