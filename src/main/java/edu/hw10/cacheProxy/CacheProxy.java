@@ -16,11 +16,13 @@ public final class CacheProxy implements InvocationHandler {
     private Path cachingPath;
     private final Object instance;
     private final Map<Object[], Object> cacheMap;
+    private final Map<Method, Cache> cachedMethods;
 
     private CacheProxy(Object instance, Path cachingPath) {
         this.cachingPath = Path.of(cachingPath.toString());
         this.instance = instance;
         cacheMap = new HashMap<>();
+        cachedMethods = new HashMap<>();
     }
 
     public static Object create(Object object, Class<?> cls, Path dir) {
@@ -45,9 +47,10 @@ public final class CacheProxy implements InvocationHandler {
             result = method.invoke(instance, args);
         }
         // check annotation and write to file
-        Cache annotation = method.getAnnotation(Cache.class);
+        Cache annotation = cachedMethods.getOrDefault(method, method.getAnnotation(Cache.class));
         if (annotation != null) {
             cacheMap.put(args, result);
+            cachedMethods.putIfAbsent(method, annotation);
             if (annotation.persist()) {
                 try {
                     writeCacheToFile(method, args, result);
@@ -55,6 +58,8 @@ public final class CacheProxy implements InvocationHandler {
                     throw new RuntimeException(e);
                 }
             }
+        } else {
+            cachedMethods.put(method, null);
         }
 
         return result;
